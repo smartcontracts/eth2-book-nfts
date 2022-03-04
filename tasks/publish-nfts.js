@@ -7,10 +7,6 @@ const { task, types } = require('hardhat/config')
 const { reqenv } = require('@eth-optimism/core-utils')
 const yesno = require('yesno')
 
-// For now these will live in fixed positions
-const PATH_IPFSHASH_DATA = path.resolve(__dirname, '../ipfs/ipfshash.json')
-const PATH_IPFS_IMAGES_FOLDER = path.resolve(__dirname, '../ipfs/images/')
-const PATH_IPFS_METADATA_FOLDER = path.resolve(__dirname, '../ipfs/metadata/')
 
 task('publish-nfts')
   .addParam('recipient', 'NFT recipient address', null, types.string)
@@ -19,6 +15,11 @@ task('publish-nfts')
   .addParam('description', 'description of NFT', null, types.string)
   .addParam('url', 'external url of NFT', null, types.string)
   .setAction(async (args, hre) => {
+    // For now these will live in fixed positions
+    const pathIpfshashData = path.resolve(__dirname, `../ipfs/${hre.network.name}/ipfshash.json`)
+    const pathIpfsImagesFolder = path.resolve(__dirname, `../ipfs/${hre.network.name}/images/`)
+    const pathIpfsMetadataFolder = path.resolve(__dirname, `../ipfs/${hre.network.name}/metadata/`)
+
     // Load and validate environment variables
     dotenv.config()
     reqenv('PINATA_API_KEY')
@@ -56,9 +57,8 @@ task('publish-nfts')
     console.log('Pinata connection successful')
 
     // Determine next image index to use
-    parseInt('2') = 2
     const nextImageIndex = fs
-      .readdirSync(PATH_IPFS_IMAGES_FOLDER)
+      .readdirSync(pathIpfsImagesFolder)
       .map((file) => {
         return parseInt(file.split('.')[0])
       })
@@ -71,13 +71,13 @@ task('publish-nfts')
     // Copy image to image folder
     fs.copyFileSync(
       args.image,
-      path.join(PATH_IPFS_IMAGES_FOLDER, `${nextImageIndex}.png`)
+      path.join(pathIpfsImagesFolder, `${nextImageIndex}.png`)
     )
 
     // Push image folder to IPFS
     console.log('Pushing image folder to IPFS...')
     const imagePublishResult = await pinata.pinFromFS(
-      PATH_IPFS_IMAGES_FOLDER,
+      pathIpfsImagesFolder,
       {
         pinataMetadata: {
           name: 'OPCNFT Images'
@@ -90,7 +90,7 @@ task('publish-nfts')
 
     // Write metadata to metadata folder
     fs.writeFileSync(
-      path.join(PATH_IPFS_METADATA_FOLDER, `${nextImageIndex}.json`),
+      path.join(pathIpfsMetadataFolder, `${nextImageIndex}.json`),
       JSON.stringify({
         name: args.name,
         description: args.description,
@@ -102,7 +102,7 @@ task('publish-nfts')
     // Push metadata folder to IPFS
     console.log('Pushing metadata folder to IPFS...')
     const metadataPublishResult = await pinata.pinFromFS(
-      path.resolve(__dirname, PATH_IPFS_METADATA_FOLDER),
+      path.resolve(__dirname, pathIpfsMetadataFolder),
       {
         pinataMetadata: {
           name: 'OPCNFT Metadata'
@@ -115,7 +115,7 @@ task('publish-nfts')
 
     // Write IPFS hash to file
     fs.writeFileSync(
-      PATH_IPFSHASH_DATA,
+      pathIpfshashData,
       JSON.stringify({
         images: imagePublishResult['IpfsHash'],
         metadata: metadataPublishResult['IpfsHash']
