@@ -7,7 +7,6 @@ const { task, types } = require('hardhat/config')
 const { reqenv } = require('@eth-optimism/core-utils')
 const yesno = require('yesno')
 
-
 task('publish-nfts')
   .addParam('recipient', 'NFT recipient address', null, types.string)
   .addParam('image', 'path to NFT image', null, types.string)
