@@ -45,11 +45,11 @@ task('publish-nfts')
     const pinata = pinataSDK(
       process.env.PINATA_API_KEY,
       process.env.PINATA_SECRET_API_KEY
-    );
+    )
 
     // Test Pinata connection
     console.log('Testing Pinata connection...')
-    const auth = await pinata.testAuthentication();
+    const auth = await pinata.testAuthentication()
     if (!auth.authenticated) {
       throw new Error(`pinata authentication failed: ${auth}`)
     }
