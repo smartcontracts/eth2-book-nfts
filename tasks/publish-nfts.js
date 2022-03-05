@@ -33,6 +33,7 @@ task('publish-nfts')
     console.log(`Name: ${args.name}`)
     console.log(`Description: ${args.description}`)
     console.log(`URL: ${args.url}`)
+    console.log(`Recipient: ${args.recipient}`)
     const ok = await yesno({
       question: 'Does this look OK?',
     })
