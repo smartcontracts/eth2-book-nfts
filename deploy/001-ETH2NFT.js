@@ -1,5 +1,5 @@
 module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
-  await deploy('OPCNFT', { from: deployer, log: true })
+  await deploy('ETH2NFT', { from: deployer, log: true })
 }

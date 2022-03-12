@@ -1,4 +1,4 @@
-# OPCNFT
+# Eth2 Book Contributor NFTs
 
-This repository holds the code for the Optimism Contributor NFT collection.
-You can get an Optimism Contributor NFT by [contributing to Optimism](https://github.com/ethereum-optimism/optimism/contribute)!
+This repository holds the code for the Eth2 Book Contributor NFT collection.
+You can get an Eth2 Book Contributor NFT by [contributing to the book](https://github.com/smartcontracts/eth2-book)!

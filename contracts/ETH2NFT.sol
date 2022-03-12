@@ -5,11 +5,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
 
-contract OPCNFT is ERC721Enumerable, Ownable {
+contract ETH2NFT is ERC721Enumerable, Ownable {
     using Strings for uint256;
     string public baseURI;
 
-    constructor() ERC721("Optimism Contributor NFTs", "OPCNFT") {}
+    constructor() ERC721("Eth2 Book Contributor NFTs", "ETH2NFT") {}
 
     function tokenURI(
         uint256 _tokenId
@@ -49,7 +49,7 @@ contract OPCNFT is ERC721Enumerable, Ownable {
     {
         require(
             tokenId == totalSupply(),
-            "OPCNFT: minting wrong token id"
+            "ETH2NFT: minting wrong token id"
         );
 
         _mint(to, tokenId);
@@ -61,7 +61,7 @@ contract OPCNFT is ERC721Enumerable, Ownable {
     {
         (bool sent,) = msg.sender.call{value: address(this).balance}("");
         if (!sent) {
-            revert("OPCNFT: eth send failed");
+            revert("ETH2NFT: eth send failed");
         }
     }
 
@@ -73,7 +73,7 @@ contract OPCNFT is ERC721Enumerable, Ownable {
     {
         bool sent = _token.transfer(msg.sender, _token.balanceOf(address(this)));
         if (!sent) {
-            revert("OPCNFT: token send failed");
+            revert("ETH2NFT: token send failed");
         }
     }
 
@@ -86,17 +86,5 @@ contract OPCNFT is ERC721Enumerable, Ownable {
         )
     {
         return baseURI;
-    }
-
-    function _transfer(
-        address,
-        address,
-        uint256
-    )
-        internal
-        override
-        pure
-    {
-        revert("OPCNFT: this is your special nft! you can't transfer it");
     }
 }

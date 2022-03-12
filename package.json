@@ -1,7 +1,7 @@
 {
-  "name": "opcnft",
+  "name": "eth2nft",
   "version": "1.0.0",
-  "description": "Optimism Contributor NFTs",
+  "description": "Eth2 Book Contributor NFTs",
   "main": "index.js",
   "license": "MIT",
   "scripts": {

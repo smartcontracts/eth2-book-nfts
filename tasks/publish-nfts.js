@@ -80,7 +80,7 @@ task('publish-nfts')
       pathIpfsImagesFolder,
       {
         pinataMetadata: {
-          name: 'OPCNFT Images'
+          name: 'ETH2NFT Images'
         },
         pinataOptions: {
           cidVersion: 0
@@ -105,7 +105,7 @@ task('publish-nfts')
       path.resolve(__dirname, pathIpfsMetadataFolder),
       {
         pinataMetadata: {
-          name: 'OPCNFT Metadata'
+          name: 'ETH2NFT Metadata'
         },
         pinataOptions: {
           cidVersion: 0
@@ -122,10 +122,10 @@ task('publish-nfts')
       }, null, 2)
     )
 
-    // Set up OPCNFT connection
-    console.log('Setting up OPCNFT connection...')
-    const deployment = await hre.deployments.get('OPCNFT')
-    const OPCNFT = new hre.ethers.Contract(
+    // Set up ETH2NFT connection
+    console.log('Setting up ETH2NFT connection...')
+    const deployment = await hre.deployments.get('ETH2NFT')
+    const ETH2NFT = new hre.ethers.Contract(
       deployment.address,
       deployment.abi,
       await hre.ethers.getSigner(
@@ -135,7 +135,7 @@ task('publish-nfts')
 
     // Update baseURI with new NFT
     console.log('Updating baseURI...')
-    const tx = await OPCNFT.setBaseURI(`ipfs://${metadataPublishResult['IpfsHash']}/`)
+    const tx = await ETH2NFT.setBaseURI(`ipfs://${metadataPublishResult['IpfsHash']}/`)
     console.log(`Transaction hash: ${tx.hash}`)
     console.log('Waiting for transaction to be mined...')
     await tx.wait()
@@ -143,7 +143,7 @@ task('publish-nfts')
 
     // Mint the new token
     console.log('Minting token...')
-    const mintTx = await OPCNFT.mint(args.recipient, nextImageIndex)
+    const mintTx = await ETH2NFT.mint(args.recipient, nextImageIndex)
     console.log(`Transaction hash: ${mintTx.hash}`)
     console.log('Waiting for transaction to be mined...')
     await mintTx.wait()
